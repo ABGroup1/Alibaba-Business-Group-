@@ -30,7 +30,7 @@
         <h1>Personal account</h1>
         <div class="profile-card">
             <p>User: <b id="userNameDisplay"></b></p>
-            <p>Your balance:</p>
+            <p>Balance:</p>
             <div class="balance">0.00 USDT</div>
             <p>~ $350,000</p>
         </div>
@@ -56,7 +56,7 @@
             document.getElementById('profileScreen').classList.remove('hidden');
             document.getElementById('userNameDisplay').textContent = user;
             
-            Telegram.WebApp.showAlert("Добро пожаловать, " + user + "!");
+            Telegram.WebApp.showAlert("Welcome, " + user + "!");
         }
 
         // Функция выхода
