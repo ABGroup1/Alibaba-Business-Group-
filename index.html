@@ -3,29 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Моё первое Mini App</title>
+    <title>Мой Крипто-Профиль</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { font-family: sans-serif; text-align: center; padding: 50px; }
-        button { padding: 12px 24px; font-size: 18px; }
+        body { font-family: sans-serif; background-color: #121212; color: white; text-align: center; padding: 20px; }
+        .hidden { display: none; }
+        input { padding: 12px; margin: 8px; width: 80%; border-radius: 8px; border: 1px solid #333; background: #222; color: white; }
+        button { padding: 12px 24px; font-size: 18px; margin-top: 10px; border-radius: 8px; border: none; background: #2ea6ff; color: white; font-weight: bold; }
+        .profile-card { background: #222; padding: 20px; border-radius: 12px; margin-top: 20px; }
+        .balance { font-size: 32px; font-weight: bold; color: #4caf50; margin: 10px 0; }
     </style>
 </head>
 <body>
-    <h1>Привет! App</h1>
-    <p id="userInfo">Загрузка...</p>
-    <button onclick="Telegram.WebApp.showAlert('Ты нажал кнопку!')">Нажми меня</button>
+
+    <!-- ЭКРАН 1: Вход -->
+    <div id="loginScreen">
+        <h1>Вход в систему</h1>
+        <input type="text" id="username" placeholder="Логин">
+        <input type="password" id="password" placeholder="Пароль">
+        <br>
+        <button onclick="login()">Войти</button>
+    </div>
+
+    <!-- ЭКРАН 2: Профиль (скрыт по умолчанию) -->
+    <div id="profileScreen" class="hidden">
+        <h1>Личный кабинет</h1>
+        <div class="profile-card">
+            <p>Пользователь: <b id="userNameDisplay"></b></p>
+            <p>Ваш баланс:</p>
+            <div class="balance">5.42 BTC</div>
+            <p>~ $350,000</p>
+        </div>
+        <button onclick="logout()" style="background: #ff4444; margin-top: 20px;">Выйти</button>
+    </div>
 
     <script>
-        // Инициализация
         Telegram.WebApp.ready();
         Telegram.WebApp.expand();
 
-        // Показать имя пользователя
-        const user = Telegram.WebApp.initDataUnsafe?.user;
-        if (user) {
-            document.getElementById('userInfo').textContent = `Привет, ${user.first_name}!`;
-        } else {
-            document.getElementById('userInfo').textContent = 'Открой это внутри Telegram';
+        // Функция входа
+        function login() {
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+
+            if (user === "" || pass === "") {
+                Telegram.WebApp.showAlert("Заполни логин и пароль!");
+                return;
+            }
+
+            // Пока просто прячем экран входа и показываем профиль
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('profileScreen').classList.remove('hidden');
+            document.getElementById('userNameDisplay').textContent = user;
+            
+            Telegram.WebApp.showAlert("Добро пожаловать, " + user + "!");
+        }
+
+        // Функция выхода
+        function logout() {
+            document.getElementById('profileScreen').classList.add('hidden');
+            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('username').value = "";
+            document.getElementById('password').value = "";
         }
     </script>
 </body>
